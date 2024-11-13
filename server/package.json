@@ -4,7 +4,10 @@
   "description": "This is a course selling app",
   "main": "index.js",
   "scripts": {
-    "dev": "nodemon server.ts"
+    "watch": "tsc -w",
+    "dev": "nodemon server.ts",
+    "build": "tsc",
+    "start": "node dist/server.js"
   },
   "keywords": [
     "Course",
