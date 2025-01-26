@@ -1,6 +1,7 @@
 "use client";
 import { useAppDispatch, useAppSelector } from "@/app/redux";
 import { setIsSidebarCollapse } from "@/state";
+import { useGetProjectsQuery } from "@/state/api";
 import { AlertCircle, AlertOctagon, AlertTriangle, Briefcase, ChevronDown, ChevronUp, Home, Layers3, LockIcon, LucideIcon, Search, Settings, ShieldAlert, User, Users, X } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
@@ -10,7 +11,9 @@ import React, { useState } from "react";
 const Sidebar = () => {
   const [showProjects, setShowProjects] = useState(true);
   const [showPrioritys, setShowPrioritys] = useState(true);
-
+  
+  const { data: projects } = useGetProjectsQuery();
+  console.log("project", showProjects, projects)
   const dispatch = useAppDispatch();
   const isSidebarCollapse = useAppSelector(state => state.global.isSidebarCollapse)
   const sideBarClassName = 
@@ -84,7 +87,15 @@ const Sidebar = () => {
             { showProjects ? <ChevronUp className="h-5 w-5" /> : <ChevronDown className="h-5 w-5" />}
         </button>
         {/* Projects lists */}
-
+        
+        {showProjects && projects?.map((project) => (
+            <SidebarLinks
+                key={project.id}
+                icon={Briefcase}
+                label={project.name}
+                href={`projects/${project.id}`}
+            />
+        ))}
 
         {/* Priority links */}
         <button onClick={() => setShowPrioritys(prev => !prev)} className="flex items-center justify-between w-full px-8 py-3 text-gray-500">
